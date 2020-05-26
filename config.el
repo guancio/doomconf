@@ -180,7 +180,6 @@
 ;; 
 
 
-;; mail
 (map! :leader
       (:prefix-map ("a" . "applications")
         :desc "e-mail"   "m"   #'mu4e))
@@ -216,6 +215,9 @@
 
 	;; to jump to folders using helm
 	(setq mu4e-completing-read-function 'completing-read)
+
+  (add-hook! mu4e-headers-mode
+             xah-fly-insert-mode-activate)
 
   (map! :map mu4e-headers-mode-map
         :desc "↑"             "i"             #'previous-line
@@ -820,10 +822,61 @@ _<backspace>_ cancel _<return>_uit
   (define-key xah-fly-shared-map (kbd "<menu>") nil)
   (define-key xah-fly-command-map (kbd "?") 'which-key-show-top-level)
   (map! :map xah-fly-command-map
-        :desc "Undo" "z" #'undo
+        "`" nil; other-frame
+        :desc "Hypen-unrescore-space" "1" #'xah-cycle-hyphen-underscore-space
+        "2" nil; xah-select-line repetition
+        "3" nil; delete-other-windows
+        "4" nil; split-window-below)
+        :desc "Delete char" "5" #'delete-char
+        :desc "Select block" "6" #'xah-select-block
+        :desc "Select line" "7" #'xah-select-line
+        :desc "Select extend" "8" #'xah-extend-selection
+        :desc "Select in quote" "9" #'xah-select-text-in-quote
+        :desc "Pop local mark" "0" #'xah-pop-local-mark-ring
+        :desc "Backward Punct" "-" #'xah-backward-punct
+        :desc "Forward Punct" "=" #'xah-forward-punct
+
+        :desc "Reformat lines" "q" #'xah-reformat-lines
+        :desc "Shrink whitespace" "w" #'xah-shrink-whitespaces
+        :desc "Delete word backward" "e" #'xah-backward-kill-word
+        :desc "Delete word" "r" #'xah-kill-word
+        :desc "Set mark" "t" #'set-mark-command
+        "y" nil; undo repetition
+        :desc "Backward word" "u" #'backward-word
+        :desc "Previous line" "i" #'previous-line
+        :desc "Forward word" "o" #'forward-word
+        :desc "Insert space" "p" #'xah-insert-space-before
+        :desc "Hippie expand" "[" #'hippie-expand
+        :desc "Forward equal sign" "]" #'xah-forward-equal-sign
+        "\\" nil
+
+        "a" nil; xah-fly-M-x
+        :desc "Open line" "s" #'open-line
+        :desc "Delete backward braket" "d" #'xah-delete-backward-char-or-bracket-text
+        :desc "Delete backward" "f" #'backward-delete-char-untabify
+        :desc "Delete block" "g" #'xah-delete-current-text-block
+        :desc "Begin line/block" "h" #'xah-beginning-of-line-or-block
+        :desc "Backward char" "j" #'backward-char
+        :desc "Next line" "k" #'next-line
+        :desc "Forward char" "l" #'forward-char
+        :desc "End line/block" ";" #'xah-end-of-line-or-block
         :desc "Comment" "'" #'xah-comment-dwim
+
+        :desc "Undo" "z" #'undo
+        :desc "Cut line/region" "x" #'xah-cut-line-or-region
+        :desc "Copy line/region" "c" #'xah-copy-line-or-region
+        :desc "Paste" "v" #'xah-paste-or-paste-previous
+        :desc "Toggle letter case" "b" #'xah-toggle-letter-case
+        :desc "Iseach forward" "n" #'isearch-forward
+        :desc "Backward (" "m" #'xah-backward-left-bracket
+        "," nil; xah-next-window-or-frame
+        :desc "Forward )" "." #'xah-forward-right-bracket
+        :desc "Goto matchin ()" "/" #'xah-goto-matching-bracket
+
         :desc "Leader" "<SPC>" #'xah-fly-leader-key-map
         )
   (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
   (xah-fly-keys)
   )
+
+   ;; ("-" . )
