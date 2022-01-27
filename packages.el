@@ -48,3 +48,5 @@
 
 ;; (package! org-mu4e :disable t)
 (package! xah-fly-keys)
+(package! nano-emacs
+  :recipe (:host github :repo "rougier/nano-emacs"))

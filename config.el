@@ -168,6 +168,55 @@
 
 (setq which-key-idle-delay 0)
 
+;; (setq g-qwerty-str "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./")
+;; (setq g-querty-list (mapcar 'char-to-string (append g-qwerty-str nil)))
+
+;; (defun g-qwerty-cmp (a b)
+;;   (let ((pos-a (cl-position (car a) g-querty-list :test 'equal))
+;;         (pos-b (cl-position (car b) g-querty-list :test 'equal)))
+;;     (cond ((and (not pos-a) (not pos-b)) (which-key-key-order a b))
+;;           ((and (not pos-a) pos-b) nil)
+;;           ((and pos-a (not pos-b)) t)
+;;           ((and pos-a pos-b) (< pos-a pos-b)))))
+
+;; (defun g-which-key-cmp (acons bcons)
+;;   (let ((pos-a (cl-position (car acons) g-querty-list :test 'equal))
+;;         (pos-b (cl-position (car bcons) g-querty-list :test 'equal))
+;;         )
+;;     (cond ((and (not pos-a) (not pos-b)) (string-lessp (downcase (cdr acons)) (downcase (cdr bcons))))
+;;           ((and (not pos-a) pos-b) nil)
+;;           ((and pos-a (not pos-b)) t)
+;;           ((and pos-a pos-b) (string-lessp (downcase (cdr acons)) (downcase (cdr bcons)))))))
+
+;; (defun g-which-key-cmp (acons bcons)
+;;   (string-lessp (downcase (cdr acons)) (downcase (cdr bcons))))
+
+;; (defun print-elements-of-list (list)
+;;   "Print each element of LIST on a line of its own."
+;;   (while list
+;;     (message (car list))
+;;     (setq list (cdr list))))
+;; (print-elements-of-list '("gazelle" "giraffe" "lion" "tiger"))
+;; (print-elements-of-list g-querty-list)
+;; (message (number-to-string
+;;           (cl-position "@" g-querty-list :test 'equal)))
+;; (message (cl-position 2 '(6 7 8 2 3 4)))
+
+;; (if (g-qwerty-cmp "a" "s") (message "yes"))
+;; (if (g-qwerty-cmp "s" "a") (message "yes"))
+;; (message (g-qwerty-cmp "t" "@"))
+
+;; (defun prefix-last-then-by-keys (acons bcons)
+;;   (let ((apref? (which-key--group-p (cdr acons)))
+;;         (bpref? (which-key--group-p (cdr bcons))))
+;;     (if (not (eq apref? bpref?))
+;;         (and (not apref?) bpref?)
+;;       (which-key-key-order acons bcons))))
+
+;; (setq which-key-sort-order 'g-qwerty-cmp)
+;; (setq which-key-sort-order 'g-which-key-cmp)
+
+
 ;; text
 (add-hook! 'text-mode-hook 'auto-fill-mode)
 (map! :leader
@@ -820,6 +869,8 @@ _<backspace>_ cancel _<return>_uit
   (define-key xah-fly-shared-map (kbd "<f8>") nil)
   (define-key xah-fly-shared-map (kbd "<f9>") 'xah-fly-mode-toggle)
   (define-key xah-fly-shared-map (kbd "<menu>") nil)
+  (define-key xah-fly-shared-map (kbd "<f11>") nil)
+  (define-key global-map (kbd "<f11>") nil)
   (define-key xah-fly-command-map (kbd "?") 'which-key-show-top-level)
   (map! :map xah-fly-command-map
         "`" nil; other-frame
@@ -875,8 +926,106 @@ _<backspace>_ cancel _<return>_uit
 
         :desc "Leader" "<SPC>" #'xah-fly-leader-key-map
         )
-  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+  (map! :map xah-fly-leader-key-map
+        ;; ("TAB" . xah-fly--tab-key-map)
+        ;; ("e" . xah-fly-dot-keymap)
+        ;; ("q" . xah-fill-or-unfill) ;; Seems logic similar to reformat
+        ;; ("w" . xah-fly-comma-keymap)
+        ;; ("'" . xah-show-formfeed-as-line) ;; no idea what it does
+        ;; ("\\" . toggle-input-method) ;; pointless, maybe change dic language?
+        ;; ("3" . delete-window) ;; Remove: duplicate
+        ;; ("4" . split-window-right) ;; Remove: duplicate
+        ;; ("5" . balance-windows) ;; Remove and add to the window menu
+        ;; ("6" . xah-upcase-sentence) ;; can make sense since 6 selects block
+        ;; ("9" . ispell-word) ;; maybe not the right place
+        ;; ("a" . mark-whole-buffer) ;; standard name, a is free in the main layer
+        ;; ("n" . end-of-buffer) ;; not sure since there is isearch there
+        ;; ("i" . xah-fly-c-keymap)
+        ;; ("h" . beginning-of-buffer) ;; Make sense since it is begin of line
+        ;; ("d" . xah-fly-e-keymap)
+        ;; ("y" . xah-search-current-word) ;; free in the main layer
+        ;; ("u" . xah-close-current-buffer) ;; not good choice since it is prev-word
+        ;; ("j" . xah-fly-h-keymap)
+        ;; ("g" . kill-line) ;; make sens, it was kill block
+        ;; ("c" . xah-copy-all-or-region)
+        ;; ("v" . xah-paste-or-paste-previous) ;; duplication. I should use ivy paste
+        ;; ("p" . recenter-top-bottom) ;; mayme does not make sens position
+        ;; ("m" . dired-jump)
+        ;; ("l" . xah-fly-n-keymap)
+        ;; ("s" . exchange-point-and-mark)
+        ;; ("r" . query-replace)
+        ;; ("q" . xah-cut-all-or-region)
+        ;; ("o" . xah-fly-r-keymap)
+        ;; (";" . save-buffer)
+        ;; ("k" . xah-fly-t-keymap)
+        ;; ("f" . switch-to-buffer)
+        ;; ("," . xah-fly-w-keymap)
+        ;; ("b" . xah-toggle-previous-letter-case)
+        ;; ("t" . xah-show-kill-ring)
+        )
+
+  (map! :map xah-fly-shared-map
+        (:prefix-map ("<f11>" . "buffer local")
+          (:prefix-map ("<f11>" . "letters")
+            :desc "α" "a" #'(lambda () (interactive) (insert "\\alpha"))
+            :desc "β" "b" #'(lambda () (interactive) (insert "\\beta"))
+            :desc "ɣ" "g" #'(lambda () (interactive) (insert "\\gamma"))
+            :desc "Γ" "G" #'(lambda () (interactive) (insert "\\Gamma"))
+            :desc "δ" "d" #'(lambda () (interactive) (insert "\\delta"))
+            :desc "Δ" "D" #'(lambda () (interactive) (insert "\\Delta"))
+            :desc "ε" "e" #'(lambda () (interactive) (insert "\\epsilon"))
+            :desc "ζ" "z" #'(lambda () (interactive) (insert "\\zeta"))
+            :desc "η" "e" #'(lambda () (interactive) (insert "\\eta"))
+            :desc "θ" "t" #'(lambda () (interactive) (insert "\\teta"))
+            :desc "Θ" "T" #'(lambda () (interactive) (insert "\\Teta"))
+            :desc "ι" "i" #'(lambda () (interactive) (insert "\\iota"))
+            :desc "λ" "l" #'(lambda () (interactive) (insert "\\lambda"))
+            :desc "Λ" "L" #'(lambda () (interactive) (insert "\\Lambda"))
+            :desc "μ" "m" #'(lambda () (interactive) (insert "\\mu"))
+            :desc "ν" "n" #'(lambda () (interactive) (insert "\\nu"))
+            :desc "ξ" "x" #'(lambda () (interactive) (insert "\\xi"))
+            :desc "Ξ" "X" #'(lambda () (interactive) (insert "\\Xi"))
+            :desc "π" "pi" #'(lambda () (interactive) (insert "\\pi"))
+            :desc "Π" "P" #'(lambda () (interactive) (insert "\\Pi"))
+            :desc "σ" "s" #'(lambda () (interactive) (insert "\\sigma"))
+            :desc "Σ" "S" #'(lambda () (interactive) (insert "\\Sigma"))
+            :desc "τ" "t" #'(lambda () (interactive) (insert "\\tau"))
+            :desc "υ" "y" #'(lambda () (interactive) (insert "\\upsilon"))
+            :desc "φ" "f" #'(lambda () (interactive) (insert "\\phi"))
+            :desc "Φ" "F" #'(lambda () (interactive) (insert "\\Phi"))
+            :desc "χ" "c" #'(lambda () (interactive) (insert "\\chi"))
+            :desc "ψ" "ps" #'(lambda () (interactive) (insert "\\phi"))
+            :desc "Ψ" "P" #'(lambda () (interactive) (insert "\\Phi"))
+            :desc "ω" "o" #'(lambda () (interactive) (insert "\\omega"))
+            :desc "Ω" "O" #'(lambda () (interactive) (insert "\\Omega"))
+            )
+          (:prefix-map ("<SPC>" . "symbols")
+            :desc "Σ" "s" #'(lambda () (interactive) (insert "\\Sum"))
+            )
+          :desc "0" "z" #'(lambda () (interactive) (insert "\\gmpty{}{}"))
+          :desc "A-x->B" "x" #'(lambda () (interactive) (yas-expand-snippet "\\gint{$1}{$2}{$3}"))
+          :desc "G;G" "c" #'(lambda () (interactive) (insert "\\gseq{}{}"))
+          :desc "G+G" "v" #'(lambda () (interactive) (insert "\\gsel{}{}"))
+          :desc "G|G" "b" #'(lambda () (interactive) (insert "\\gpar{}{}"))
+          :desc "A-x->B" "a" #'(lambda () (interactive) (yas-expand-snippet "\\gint{$1_{$4}}{$2_{$4}}{$3_{$4}}"))
+          ))
+
+
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
   (xah-fly-keys)
   )
 
-   ;; ("-" . )
+(load "/home/guancio/Utils/HOL/tools/hol-mode")
+;; HOL4
+(define-key global-map (kbd "<menu>") nil)
+(map! :localleader
+      :map sml-mode-map
+      :desc "start hol" "h" #'hol
+      )
+
+;; (require 'disp-table)
+;; (require 'nano-theme-light)
+;; (require 'nano-help)
+;; (require 'nano-modeline)
+;; (require 'nano-layout)
